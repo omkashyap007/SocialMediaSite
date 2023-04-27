@@ -1,0 +1,326 @@
+{% load static %}
+
+<style type = "text/css" >
+
+.chat-dropdown-header:hover{
+    cursor : pointer ; 
+    background : var(--main-background-color) ; 
+}
+
+.chat-dropdown-header {
+    background : var(--light-primary-text-color) ; 
+    color: var(--light-primary-text-color) ; 
+}
+
+.scrollable-menu {
+    height:auto ; 
+    max-height : 90vh ; 
+    width : 500px ; 
+    overflow: hidden ; 
+}
+
+.notifications-material-icon{
+    font-size  : 18px ; 
+}
+
+.notifications-icon-container{
+    width : 40px ; 
+    height : 40px ; 
+    background-color : var(--main-background-color) ; 
+}
+
+.notifications-icon-container:hover{
+    cursor : pointer ; 
+    background-color: var(--secondary-text-color) ; 
+}
+
+.notify-badge{
+    position:absolute ; 
+    background: transparent ; 
+    height : 1.2rem ; 
+    width : 1.2rem ; 
+    line-height:1.2rem ; 
+    top:1rem ; 
+    right:2rem ; 
+    text-align : center ; 
+    font-size : 1rem ; 
+    border-radius : 50% ;
+    color:white ; 
+    font-weight : 630px ; 
+    margin-top : 15px ; 
+    margin-right : -25px ; 
+}
+
+#id_notifications_spinner{
+    margin-top : 20px ; 
+    margin-bottom: 20px ; 
+}
+
+
+
+</style>
+
+<div class = "d-flex p-3 px-md-4 mb-4 bg-white border-bottom shadow-sm">
+
+    <!-- BIG AND MEDIUM SCREENS STARTS HERE -->
+
+
+    <div class = "d-none d-md-flex flex-row my-auto flex-grow-1 align-items-center">
+
+        <!-- column 1 starts -->
+        <h5 class = "mr-3 font-weight-normal justify-content-start align-items-center">
+            <a class = "p-2 dark" href = "{% url 'home' %} " style = "text-decoration:none ; ">
+                HOME
+            </a>
+        </h5>
+        <!-- column  1 ends -->
+
+        <!-- column 2 starts -->
+        <form class = "search-bar justify-content-start" onsubmit = " return executeQuery() ; ">
+            
+            
+            <input type = "text" class = "form-control" name = "q" id = "id_q_large" placeholder= "Search..." >
+            
+            
+        </form>
+        <!-- column 2 ends -->
+
+
+        <!--column 3 starts -->
+
+        <div class = "d-flex flex-row-reverse flex-grow-1">
+            <nav>
+                {% if request.user.is_authenticated %}
+                <div class="dropdown dropleft show p-2">
+                    
+                    <div class = "d-flex flex-row" > 
+                        
+                        <!-- chat notification -->
+                        <div class = "btn-group dropleft"  style = "margin-left : 10px ; ">
+                        
+                            <div class = "d-flex notification-icon-container rounded-circle align-items-center mr-3 " id = "id_chat_notification_dropdown_toggle" data-toggle = "dropdown" >
+                                <span id = "id_chat_notifications_count" class = "notify-badge">
+                                </span>
+
+                                <span class = "d-flex material-icons notificattions-material-icon m-auto align-items-center"> chat </span>  
+
+                                <div class = "dropdown-menu scrollable-menu" aria-labelledby = "id_chat_notification_dropdown_toggle" id = "id_chat_notifications_container">
+                                </div>
+                        </div>
+
+                        <!-- general notification -->
+
+                        <div class = "btn-group dropleft" style = "margin-left: 10px ;">
+                        
+                            <div class = "d-flex notification-icon-container rounded-circle align-items-center mr-3" id = "id_notification_dropdown_toggle" data-toggle = "dropdown">
+                                
+                                <span id = "id_general_notifications_count" class = "notify-badge" style = "margin-right : 10px ; margin-top:-10px ; height:10px; width:10px; font-size : 10px;   "  onclick = "setGeneralNotificationsAsRead()">
+                                </span>
+                                <span class = "d-flex material-icons notificattions-material-icon m-auto align-items-center" style = "width:40px  ;" onclick = "setGeneralNotificationsAsRead()"> notifications </span>  
+
+                                
+                                <div class = "dropdown-menu scrollable-menu info-div overflow-auto" aria-labelledby = "id_notification_dropdown_toggle" id = "id_general_notifications_container" style = "position: relative;
+                                max-height: 400px;
+                                overflow-y: scroll; width : 400px ; ">
+                                </div>
+                        </div>
+
+
+
+
+                        <!-- account -->
+
+                        <div class = "btn-group dropleft" >
+                            <img class = "account-image rounded-circle m-auto d-block dropdown-toggle" id = "id_profile_links" data-toggle= "dropdown" aria-haspopup  = "true" aria-expanded = "false" 
+                            src = "{{request.user.profile_image.url}}" alt = "Site" width = "40" height = "40">
+
+                            <div class = "dropdown-menu" aria-labelledby = "id_profile_links">
+                                <a class = "dropdown-item" href = "{% url 'account:view' user_id=request.user.id  %}" > Account </a>
+                                <a class = "dropdown-item" href = "{% url 'logout-user' %}" > Logout </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                {% else %}
+
+                <a href = "{% url 'login-user' %}" class = "p-2 btn btn-primary" 
+                    style = "color: white;margin-right:5px;  "> Login </a>
+                    
+                <a href = "{% url 'register-user' %}" class = "btn btn-outline-primary"> Register </a>
+
+
+                {% endif %}
+            </nav>
+        </div>
+
+        <!-- columns 3 ends -->
+
+    </div>
+
+
+
+    <!-- BIG AND MEDIUM SCREENS ENDS HERE -->
+
+
+    <!-- SMALLLER SCREENS / FOR THE MOBILES-->
+ 
+    <div class = "d-flex d-md-none flex-column my-auto m-auto align-items-center ">
+
+        <!-- row 1 -->
+        <h5 class = "font-weight-normal">
+            <a class = "p-2 text-dark" href = "{% url 'home' %}" style = "text-decoration:none "> Home </a>
+        </h5>
+        <!-- row 2-->
+        
+        <form class = "search-bar justify-content-start my-2"  onsubmit = " return executeQuery() ; ">
+            <input type = "text" class = "form-control" name = "q" id = "id_q_small" placeholder = "Search ...">
+        </form>
+        
+
+        <!-- row 3 -->
+
+        <div class = "d-flex flex-row-reverse flex-grow-1">
+        
+            <nav class = "" >
+
+
+
+                {% if request.user.is_authenticated %}
+                <div class="dropdown dropleft show p-2">
+                    
+                    <div class = "d-flex flex-row" > 
+                        
+
+                        <!-- account -->
+
+                        <div class = "btn-group dropleft" style = "margin-left: 10px ;">
+                            <img class = "account-image rounded-circle m-auto d-block dropdown-toggle" id = "id_profile_links" data-toggle= "dropdown" aria-haspopup  = "true" aria-expanded = "false" 
+                            src = "{{request.user.profile_image.url}}" alt = "Site" width = "40" height = "40">
+
+                            <div class = "dropdown-menu" aria-labelledby = "id_profile_links">
+                                <a class = "dropdown-item" href = "{% url 'account:view' user_id=user.id %}" > Account </a>
+                                <a class = "dropdown-item" href = "{% url 'logout-user' %}" > Logout </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <a href = "{% url 'login-user' %}" class = "p-2 btn btn-primary" 
+                    style = "color: white;margin-right:5px;  "> Login </a>
+                    
+                <a href = "{% url 'register-user' %}" class = "btn btn-outline-primary"> Register </a>
+
+
+                {% endif %}
+
+            </nav>
+        
+        </div>
+
+    </div>
+</div>
+
+{% include "snippets/general_notifications.html" %}
+{% include "snippets/chat_notifications.html" %}
+
+<script type = "text/javascript">
+
+    var ws_scheme = window.location.protocol == "https" ? "wss" : "ws" ; 
+    var ws_path = ws_scheme +"://"+ window.location.host+"/"
+    //var ws_production_path = ws_scheme+"://"+window.location.host+":8001/" ; 
+
+    var notificationSocket = new WebSocket(ws_path) ;
+
+    notificationSocket.onmessage = function(message) {
+        var data = JSON.parse(message.data) ; 
+        console.log(data) ; 
+
+        if(data.general_msg_type == 0){  
+            console.log(data["notifications"])
+            handleGeneralNotificationsData(data["notifications"] , data["new_page_number"] ) ;
+        }
+        if(data.general_msg_type == 4){  
+            console.log(data["notifications"])
+            setUnreadGeneralNotificationsCount(data["count"]) ; 
+        }
+        
+        if(data.general_msg_type == 2 )  { 
+            refreshGeneralNotificationsData(data.notifications) ; 
+        }
+
+        if(data.general_msg_type == 3 )  { 
+            handleNewGeneralNotificationsData(data.notifications) ; 
+        }
+        if(data.general_msg_type == 5) { 
+            updateGeneralNotificationDiv(data["notification"]) ; 
+        }
+
+        if(data.general_msg_type ==1 ){
+            setGeneralPaginationExhausted() ; 
+        }
+
+        if(data.general_msg_type == -1) {
+            console.log("There is no notification for this user !") ;
+        }
+
+
+        // This is for chat notifications
+
+        if(data.chat_msg_type == 10) {
+            handleChatNotificationsData(data.notifications , data.new_page_number) ; 
+
+
+        }
+    }
+    notificationSocket.onopen = function(e) {
+        console.log("Notification socket connected !") ; 
+        setupGeneralNotificationsMenu() ; 
+        getFirstGeneralNotificationsPage() ; 
+        getUnreadGeneralNotificationsCount() ; 
+        setupChatNotificationsMenu() ; 
+        getFirstChatNotificationsPage() ;
+        console.log("The Notification socket has connected and functions have run !") 
+    }
+
+    notificationSocket.onerror = function(message) {
+        console.log("The notification socket closed unexpectedly !") ; 
+    }
+
+    notificationSocket.onclose= function(message) {
+        console.log("The notification socket is closed !") ; 
+    }
+    
+    
+    if(notificationSocket.readyState == WebSocket.CONNECTING){
+        console.log("Notification socket Connecting !") ;
+    }
+
+    if(notificationSocket.readyState == WebSocket.CLOSED || notificationSocket == null) {
+        console.log("The connection to notification socket is closed !") ; 
+    }
+
+</script>
+<script type = "text/javascript">
+
+    function executeQuery() {
+        var query = document.getElementById("id_q_small").value ; 
+
+        if (query == "") { 
+            query = document.getElementById("id_q_large").value  ; 
+        }
+
+        window.location.replace("{% url 'search' %}?q=" + query) ; 
+
+        return false
+    }
+
+    
+</script>

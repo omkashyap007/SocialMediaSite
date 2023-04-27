@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<style type="text/css">
+
+  .card-signin {
+	  width: 100%;
+	  max-width: 400px;
+	  padding: 15px;
+	  margin: auto;
+  }
+  
+  .form-signin input[type="email"] {
+    margin-bottom: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .form-signin input[type="password"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+
+</style>
+
+<div class="container-fluid">
+	<div class="row justify-content-center">
+		<div class="card card-signin">
+		  <div class="card-body">
+		    <form class="form-signin" method="post">
+                {% csrf_token %}
+				<div class="d-flex flex-column pb-3">
+				<img class="img-fluid mx-auto d-block" src="{% static 'siteimages/skeleton_doing_dab.jpg' %}" alt="The logo" width="72" height="72">
+				</div>
+
+                    {{form.email}}
+                     
+                    {{form.password}}
+                    <br>
+
+                    {% if errors %}
+
+                        {% for error in errors %}
+
+                            <div class = "alert alert-danger">{{error}}</div>
+
+                        {% endfor %}
+
+                    {% endif %}
+                <br>
+                <center>
+				<button class="btn btn-primary " type="submit">Log in</button>
+                </center>
+            </form>
+
+				<div class="d-flex flex-column my-4">
+					<a class="m-auto" href="{% url 'password_reset' %}">Reset password</a>
+				</div>
+		  </div>
+		</div>
+		
+	</div>
+</div>
+
+
+
+
+
+
+{% endblock content %}

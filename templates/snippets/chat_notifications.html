@@ -1,0 +1,249 @@
+{% load static %}
+
+<style type = "text/css" >
+
+    .notification-thumbnail-image{
+        height : 50px ; 
+        width : 50px ; 
+    }
+
+    .chat-card:hover{
+        cursor: pointer ; 
+        background:#f2f2f2 ; 
+    }
+    .chat-card{
+        border-bottom : 1px solid  var(--main-background-color) ; 
+    }
+
+    .timestamp-text{
+        color: var(--secondary-text-color) ; 
+    }
+
+    .notification-chatroom-msg{
+        color:var(--light-primary-text-color) ;
+    }
+
+    #id_notifications_loading_spinner{
+        position:absolute ; 
+        margin-top:40px ; 
+    }
+
+    .chat-dropdown-header:hover{
+        cursor: pointer ; 
+    }
+
+    .chat-dropdown-header{
+        color : var(--light-primary-text-color) ; 
+    }
+
+</style>
+
+<script>
+
+    function clearNoChatNotificationsCard(){
+        var element = document.getElementById("id_no_chat_notifications") ; 
+        if(element != null && element != "undefined") {
+            document.getElementById("id_chat_notifications_container").removeChild(element) ; 
+        }
+    }
+
+    function setupChatNotificationsMenu() {
+        var notificationContainer = document.getElementById("id_chat_notifications_container") ; 
+        if(notificationContainer != null) {
+            setupChatDropdownHeader() ; 
+
+            card = createChatNotificationCard("id_no_chat_notifications") ; 
+            var div = document.createElement("div")  ; 
+            div.classList.add("d-flex" , "flex-row" , "align-items-start") ; 
+            
+            span = document.createElement("span") ; 
+            span.classList.add("align-items-start" , "pt-1" , "m-auto") ; 
+            span.innerHTML = "You have no notifications" ; 
+            div.appendChild(span) ; 
+            card.appendChild(div) ; 
+            notificationContainer.appendChild(card) ; 
+        }
+        console.log("The notification system for none is ready  !")
+    }
+
+    function createChatNotificationCard(cardId) {
+        var card = document.createElement("div") ; 
+        if(cardId != null && cardId != null) {
+            card.id = cardId ; 
+        }
+        card.classList.add("d-flex" , "flex-column" , "align-items-start" , "align-items-start" , "chat-card" , "p-4") ; 
+        return card ;
+    }
+
+    function createChatProfileThumbnail(notification){
+        img = document.createElement("img") ; 
+        img.classList.add("notification-thumbnail-image" , "img-fluid" ,  "rounded-circle" , "mr-2") ; 
+        img.src = "{% static 'siteimages/dummy_image.png' %}" ;
+        img.id = assignChatImgId(notification) ; 
+        return img ; 
+    }
+
+    function createChatTimeStampElement(notification) {
+        var timestamp = document.createElement("p") ; 
+        timestamp.classList.add("small" , "pt-2" , "timestamp-text") ; 
+        timestamp.innerHTML = notification["natural_timestamp"]  ; 
+        timestamp.id = assignChatTimestampId(notification) ; 
+        return timestamp ; 
+    }
+
+    function createUnreadChatRoomMessagesElement(notification){
+        card = createChatNotificationCard() ; 
+        card.id = assignChatCardId(notification) ; 
+        card.addEventListener("click" , function(){
+            chatRedirect(notification["actions"]["redirect_url"]) ; 
+        }) ;
+
+        var div1 = document.createElement("div") ; 
+        div1.classList.add("d-flex" , "flex-row" , "align-items-start") ; 
+        div1.id = assignChatDiv1Id(notification) ; 
+
+        img = createChatProfileThumbnail(notification) ; 
+        img.id = assignChatImgId(notification) ; 
+
+        var div2 = document.createElement("div") ; 
+        div2.classList.add("d-flex" , "flex-column") ; 
+        div2.id = assignChatDiv2Id(notification) ; 
+
+        var title = document.createElement("span") ;
+        title.classList.add("align-items-start") ; 
+        title.innerHTML = notification["from"]["title"] ; 
+        title.id = assignChatTitleId(notification) ; 
+        div2.appendChild(title) ; 
+
+        var chatRoomMessage = document.createElement("span") ; 
+        chatRoomMessage.id = assignChatroomMessageId(notification) ; 
+        chatRoomMessage.classList.add("align-items-start" , "pt-1" , "small" , "notification-chatroom-msg") ; 
+
+        if(notification["verb"].length > 50) {
+            chatRoomMessage.innerHTML = notification["verb"].slice(0,50) +"..." ; 
+        }
+        else{
+            chatRoomMessage.innerHTML = notification["verb"] ; 
+        }
+
+        div2.appendChild(chatRoomMessage) ; 
+        div1.appendChild(div2) ; 
+        card.appendChild(div1) ; 
+        card.appendChild(createChatTimeStampElement(notification)) ; 
+        return card ; 
+
+    }
+
+    function appendBottomChatNotification(notification){
+        switch(notification["notification_type"]){
+            case "UnreadChatRoomMessages" :
+                chatNotificationContainer = document.getElementById("id_chat_notifications_container") ; 
+                card = createUnreadChatRoomMessagesElement(notification) ; 
+                chatNotificationContainer.appendChild(card) ; 
+                break ; 
+            default :
+                break ; 
+        }
+    }
+
+    function handleChatNotificationsData(notifications , new_page_number){
+        if(notifications.length >0 ){
+            clearNoChatNotificationsCard() ; 
+            console.log(notifications) ; 
+            notifications.forEach(notification => {
+                appendBottomChatNotification(notification) ; 
+                console.log("The notifications are added !")
+            })
+        }
+    }
+
+    function setupChatDropdownHeader() {
+        var notificationContainer = document.getElementById("id_chat_notifications_container") ; 
+
+        if(notificationContainer != null)  {
+            var div = document.createElement("div") ; 
+            div.classList.add("chat-dropdown-header" , "d-flex" , "flex-row" , "justify-content-end" , "m-auto" , "align-items-end") ; 
+            div.addEventListener("click" , function(e){
+                var url = "{% url 'chat:private-chat-room' %}" ; 
+                chatRedirect(url) ; 
+            }) ;
+
+            span1  = document.createElement("span") ; 
+            span1.classList.add("mr-2") ; 
+            span1.innerHTML = "Go to chat !" ; 
+            div.appendChild(span1) ; 
+
+            span2 = document.createElement("span") ; 
+            span2.classList.add("material-icons" , "mr-2") ; 
+            span2.innerHTML = "open_with" ; 
+            div.appendChild(span2) ; 
+            notificationContainer.appendChild(div) ; 
+        }
+    }
+
+    function chatRedirect(url) { 
+        window.location.href = url ; 
+    }
+</script>
+
+<script type = "text/javascript">
+
+    function getFirstChatNotificationsPage(){
+        if("{{request.user.is_authenticated}}") {
+            notificationSocket.send(
+                JSON.stringify(
+                    {
+                        "command" : "get_chat_notifications" , 
+                        "page_number" : "1" , 
+                    }
+                )
+            )
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+	/**
+		Helpers for assigning ids to important elements.
+	**/
+	function assignChatDiv1Id(notification){
+		return "id_chat_div1_" + notification['notification_id']
+	}
+
+	function assignChatImgId(notification){
+		return "id_chat_img_" + notification['notification_id']
+	}
+
+	function assignChatTitleId(notification){
+		return "id_chat_title_" + notification['notification_id']
+	}
+
+	function assignChatroomMessageId(notification){
+		return "id_chat_message_" + notification['notification_id']
+	}
+
+	function assignChatDiv2Id(notification){
+		return "id_chat_div2_" + notification['notification_id']
+	}
+
+	function assignChatTimestampId(notification){
+		return "id_timestamp_" + notification['notification_id']
+	}
+
+	function assignChatCardId(notification){
+		return "id_notification_" + notification['notification_id']
+	}
+
+    /* 
+	function setChatInitialTimestamp(){
+		// ('%Y-%m-%d %H:%M:%S.%f')
+		var today = new Date();
+		var date = today.getFullYear() + "-01-01 01:00:00.000000"
+		document.getElementById("id_chat_newest_timestamp").innerHTML = date
+	}
+
+	setChatInitialTimestamp() 
+    */
+</script>

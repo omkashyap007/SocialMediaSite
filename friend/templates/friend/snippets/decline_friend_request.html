@@ -1,0 +1,33 @@
+<script type = "text/javascript" > 
+
+function declineFriendRequest(friend_request_id, uiUpdateFunction ){
+    var url = "{% url 'friend:friend-request-decline' friend_request_id=53252623623632623 %}".replace("53252623623632623", friend_request_id)
+    $.ajax({
+        type : "GET" ,
+        dataType : "json" , 
+        timeout : 5000 , 
+        url : url  ,
+
+        success : function(data) { 
+            if(data.response == "Declined the request !"){
+                console.log("Decilned the request !")
+            }
+
+            else if(data.resposne != null) {
+                alert("Something went wrong !" + data.e) ;
+            }
+        },
+
+        error : function(data) {
+            alert("Somethign went wrong !") ; 
+        }
+        ,
+        complete: function(data) {
+            uiUpdateFunction() ; 
+        }
+    })
+
+    
+}
+
+</script>

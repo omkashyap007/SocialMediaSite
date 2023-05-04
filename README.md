@@ -29,10 +29,51 @@ We have used the following technologies to develop the Advanced Chat System:
 
 To get started with the Advanced Chat System, follow these simple steps:
 
-Clone the repository to your local machine.
+1. Clone the repository to your local machine.
 
-1. Install the required dependencies by running the following command:
+2. Install the required dependencies by running the following command:
 ```
 pip install -r requirements.txt
 ```
+3. Create a database by running the following command:
+```
+python manage.py migrate
+```
+4. Start the developement server by running the following command : 
 
+```
+python manage.py runserver
+```
+5. Navigate to http://localhost:8000 in your web browser to access the application.
+
+## Usage
+**Public Chat System**
+To use the public chat system, follow these steps:
+
+Just login to the application with proper authentication . 
+You'll get navigated to the HomePage , you'll see the  public chat section.
+Type your message in the message field and hit enter to send it.
+
+## Private Messaging
+To use the private messaging system, follow these steps:
+
+Click on the "Chat" button in the header menu.
+Search for the friend you wish to message and click on their profile.
+Click on the "Send Message" button and type your message in the message field.
+Hit enter to send the message.
+
+## Code Sharing
+To share code snippets with other users, follow these steps:
+
+Type your code snippet in the message field.
+Use Markdown syntax to format your code snippet.
+Hit enter to send the message.
+
+Example : 
+
+```
+  ```python
+  def function() :
+      print("This function is run !")    
+  ```
+```

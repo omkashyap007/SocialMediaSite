@@ -1,4 +1,4 @@
-**Social Media Site**
+#**Social Media Site**
 
 Welcome to the Advanced Chat System, a powerful communication platform that allows you to chat with anyone in the world who is logged in. Whether you want to chat publicly or privately, connect with new people, or stay in touch with friends and family, our platform makes it easy and convenient.
 
@@ -17,4 +17,10 @@ XSS protection: We use Markdown it to prevent XSS attacks.
 
 We have used the following technologies to develop the Advanced Chat System:
 
-Django: A high-level Python web framework for rapid development.
+  > Django: A high-level Python web framework for rapid development.
+  > Django Channels: A Django library that extends WebSockets and handles asynchrony.
+  > WebSockets: A protocol for bi-directional, real-time communication between clients and servers.
+  ## How to Use
+
+Getting started with the Advanced Chat System is easy. Simply sign up, create your profile, and start chatting! Here's how:
+

@@ -69,8 +69,11 @@ Type your code snippet in the message field.
 Use Markdown syntax to format your code snippet.
 Hit enter to send the message.
 
-Example : 
-  ```python
-  def function() :
-      print("This function is run !")    
-  ```
+## Friends System
+Find friends: Search for people over the application and add them as friends.
+Chat: Start chatting with anyone publicly or privately, and enjoy real-time notifications.
+Also go to your profile to see who are your friends and message them . 
+
+## Friend Request
+Sending Friend Request : Go to someone's profile and then hit the friends button to make them friends .
+Accepting Friend Request : Go to someone's profile and then accept the friend request or you will get notified when you have a friend request on the notification button . 

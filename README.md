@@ -70,10 +70,9 @@ Use Markdown syntax to format your code snippet.
 Hit enter to send the message.
 
 Example : 
-
 ```
-  ```python
+  \`\`\`python
   def function() :
       print("This function is run !")    
-  ```
-```
+  \`\`\`
+ ```

@@ -1,4 +1,4 @@
-**#Social Media Site**
+**# Social Media Site**
 
 Welcome to the Advanced Chat System, a powerful communication platform that allows you to chat with anyone in the world who is logged in. Whether you want to chat publicly or privately, connect with new people, or stay in touch with friends and family, our platform makes it easy and convenient.
 

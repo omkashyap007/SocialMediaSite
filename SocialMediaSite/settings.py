@@ -71,25 +71,39 @@ TEMPLATES = [
 WSGI_APPLICATION = 'SocialMediaSite.wsgi.application'
 ASGI_APPLICATION = 'SocialMediaSite.routing.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+if os.environ.get("MYSQL_PASSWORD") : 
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [("127.0.0.1", 6379)],
+            },
         },
-    },
-}
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'socialmedia',                      
-        'USER': 'root',                      
-        'PASSWORD': os.environ.get("MYSQL_PASSWORD"),         
-        'HOST': '127.0.0.1',                 
-        'PORT': '3306',
     }
-}
+else : 
+    CHANNEL_LAYERS = {
+        "default" : {
+            "BACKEND" : "channels.layers.InMemoryChannelLayer" , 
+        }
+    }
+if os.environ.get("MYSQL_PASSWORD") : 
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql', 
+            'NAME': 'socialmedia',                      
+            'USER': 'root',                      
+            'PASSWORD': os.environ.get("MYSQL_PASSWORD"),         
+            'HOST': '127.0.0.1',                 
+            'PORT': '3306',
+        }
+    }
+else : 
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [

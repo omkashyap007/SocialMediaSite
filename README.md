@@ -6,21 +6,33 @@ Welcome to the Advanced Chat System, a powerful communication platform that allo
 
 Our chat system comes packed with features to enhance your communication experience, including:
 
-Public chat: Chat with anyone in the world who is logged in.
-Private chat: Chat privately with your friends and family.
-Profile management: Create and update your profile with ease.
-Friend management: Find people over the application and make them your friends.
-Real-time notifications: Get notified in real-time when you have a message or notification.
-Code sharing: Send codes in the form of messages.
-XSS protection: We use Markdown it to prevent XSS attacks.
+**Public Chat System** : Connect and chat with anyone in the world who is logged in to the application. Choose from multiple chat rooms to join conversations on topics that interest you.
+
+**Private Messaging** : Chat privately with friends you have added on the application. Share confidential information, photos, videos, or just engage in a casual conversation without worrying about others seeing your messages.
+
+**Advanced Profile Management** : Create and update your profile to make it stand out. Add a profile picture, cover photo, bio, and any other information you want others to know about you. You can also find and add friends on the application, create and join groups, and participate in forum discussions.
+
+**Code Sharing** : Share code snippets with other users in the form of messages. Our built-in Markdown editor ensures that your messages are rendered safely and accurately.
+
+**Real-time Notification System** : Never miss an important message or notification again. Our real-time notification system keeps you informed about any new messages, friend requests, group invites, or other updates related to your account.
+
+**Advanced Security** : Our application is built with the latest security protocols to ensure that your data is safe and secure. We use Markdown-it to prevent XSS attacks, ensuring that your messages are rendered safely and accurately.
+
 ## Technologies
 
 We have used the following technologies to develop the Advanced Chat System:
 
-  > Django: A high-level Python web framework for rapid development.
-  > Django Channels: A Django library that extends WebSockets and handles asynchrony.
-  > WebSockets: A protocol for bi-directional, real-time communication between clients and servers.
+1. Django: A high-level Python web framework for rapid development.
+2. Django Channels: A Django library that extends WebSockets and handles asynchrony.
+3. WebSockets: A protocol for bi-directional, real-time communication between clients and servers.
   ## How to Use
 
-Getting started with the Advanced Chat System is easy. Simply sign up, create your profile, and start chatting! Here's how:
+To get started with the Advanced Chat System, follow these simple steps:
+
+Clone the repository to your local machine.
+
+1. Install the required dependencies by running the following command:
+```
+pip install -r requirements.txt
+```
 
